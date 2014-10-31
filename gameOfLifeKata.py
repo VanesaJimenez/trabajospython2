@@ -1,148 +1,116 @@
-row = 0
-col = 0
-cellrow = 0
-cellcol = 0
+# esta kata la tome prestada de ricky XD 
+"""
+    Any live cell with fewer than two live neighbours dies, as if caused by under-population.
+    Any live cell with two or three live neighbours lives on to the next generation.
+    Any live cell with more than three live neighbours dies, as if by overcrowding.
+    Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+"""
 
-def numadj(board):
-    global cellcol
-    global cellrow
-    global col
-    global row
-    adj = 0
-    if cellcol == 0:
-        if cellrow == 0:
-            if board[cellcol][cellrow+1] == "*":
-                adj += 1
-            if board[cellcol+1][cellrow] == "*":
-                adj += 1
-            if board[cellcol+1][cellrow+1] == "*":
-                adj += 1
-        elif cellrow == (row-1):
-            if board[cellcol][cellrow-1] == "*":
-                adj += 1
-            if board[cellcol-1][cellrow] == "*":
-                adj += 1
-            if board[cellcol-1][cellrow-1] == "*":
-                adj += 1
-        else:
-            if board[cellcol][cellrow-1] == "*":
-                adj += 1
-            if board[cellcol][cellrow+1] == "*":
-                adj += 1
-            for row2 in range(-1,2):
-                if board[cellcol+1][cellrow+row2] == "*":
-                    adj += 1
-    elif cellcol == (col-1):
-        if cellrow == 0:
-            if board[cellcol][cellrow+1] == "*":
-                adj += 1
-            if board[cellcol-1][cellrow] == "*":
-                adj += 1
-            if board[cellcol-1][cellrow+1] == "*":
-                adj += 1
-        elif cellrow == (row-1):
-            if board[cellcol-1][cellrow] == "*":
-                adj += 1
-            if board[cellcol-1][cellrow-1] == "*":
-                adj += 1
-            if board[cellcol][cellrow-1] == "*":
-                adj += 1
-        else:
-            if board[cellcol][cellrow-1] == "*":
-                adj += 1
-            if board[cellcol][cellrow+1] == "*":
-                adj += 1
-            for row3 in range(-1,2):
-                if board[cellcol-1][cellrow+row3] == "*":
-                    adj += 1
-    else:
-        if cellrow == 0:
-            for row4 in range(0,2):
-                if board[cellcol-1][cellrow+row4] == "*":
-                    adj += 1
-            for row5 in range(0,2):
-                if board[cellcol+1][cellrow+row5] == "*":
-                    adj += 1
-            if board[cellcol][cellrow+1] == "*":
-                adj += 1                
-        elif cellrow == (row-1):
-            for row6 in range(-1,1):
-                if board[cellcol-1][cellrow+row6] == "*":
-                    adj += 1
-            for row7 in range(-1,1):
-                if board[cellcol+1][cellrow+row7] == "*":
-                    adj += 1
-            if board[cellcol][cellrow-1] == "*":
-                adj += 1
-        else:
-            for row8 in range(-1,2):
-                if board[cellcol-1][cellrow+row8] == "*":
-                    adj += 1
-            for row8 in range(-1,2):
-                if board[cellcol+1][cellrow+row8] == "*":
-                    adj += 1
-            if board[cellcol][cellrow-1] == "*":
-                adj += 1
-            if board[cellcol][cellrow+1] == "*":
-                adj += 1
-    return adj
 
 def NextOfspring(u):
+    changes = []
+    h = int(u[0])
+    w = int(u[1])
+    for xxxx in range (0, h*w):
+        changes.append(" ")
+    u = list(u[2:])
+    for x in range (0, h*w):
+        alive = []
+        if x == h*w-w:
+            if u[x+1] == "*":
+                alive.append(x+1)
+            for y in range (x-w, x-w+2):
+                if u[y] == "*":
+                    alive.append(y)
+        elif x == w-1:
+            if u[x-1] == "*":
+                alive.append(x-1)
+            for y in range (x+w-1, x+w+1):
+                if u[y] == "*":
+                    alive.append(y)
+        elif x == 0:
+            if u[x+1] == "*":
+                alive.append(x+1)
+            for y in range (x+w, x+w+2):
+                if u[y] == "*":
+                    alive.append(y)
+        elif x == h*w-1:
+            if u[x-1] == "*":
+                alive.append(x-1)
+            for y in range (x-w-1, x-w+1):
+                if u[y] == "*":
+                    alive.append(y)
+        #ya se acaban kas esquinas
+        elif x % w == 0:
+            for y in range (x-w, x-w+2):
+                if u[y] == "*":
+                    alive.append(y)
+            for z in range (x+w, x+w+2):
+                if u[z] == "*":
+                    alive.append(z)
+            if u[x+1] == "*":
+                alive.append(x+1)
+        elif (x+1) % w == 0:
+            for y in range (x-w-1, x-w+1):
+                if u[y] == "*":
+                    alive.append(y)
+            for z in range (x+w-1, x+w+1):
+                if u[z] == "*":
+                    alive.append(z)
+            if u[x-1] == "*":
+                alive.append(x-1)
+        elif x < w:
+            for y in range (x+w-1, x+w+2):
+                if u[y] == "*":
+                    alive.append(y)
+            if u[x-1] == "*":
+                alive.append(x-1)
+            if u[x+1] == "*":
+                alive.append(x+1)
+        elif x >= h*w-w:
+            for y in range (x-w-1, x-w+2):
+                if u[y] == "*":
+                    alive.append(y)
+            if u[x-1] == "*":
+                alive.append(x-1)
+            if u[x+1] == "*":
+                alive.append(x+1)
+        else:
+            for y in range (x-w-1, x-w+2):
+                if u[y] == "*":
+                    alive.append(y)
+            for z in range (x+w-1, x+w+2):
+                if u[z] == "*":
+                    alive.append(z)
+            if u[x-1] == "*":
+                alive.append(x-1)
+            if u[x+1] == "*":
+                alive.append(x+1)
+        if u[x] == "." and len(alive) == 3:
+            changes[x] = "*"
+        elif u[x] == "*":
+            if len(alive)<2 or len(alive)>3:
+                changes[x] = "."
+    for zzz in range (0, h*w):
+        if changes[zzz]!=" ":
+            u[zzz] = changes[zzz]
+    u.insert(0,w)
+    u.insert(0,h)
+    return(u)
+
     """
         Esta funcion recibe un universo y regresa la siguiente generacion segun las reglas
         Nota: La funcion recibe la cadena el el formato establecido y lo regresa en el mismo formato
     """
-    global cellrow
-    global cellcol
-    global col
-    global row
-    u2 = GetUniverse(u)
-    splt = u2.split("\n")
-    del splt[-1]
-    copy = u2.split("\n")
-    del copy[-1]
-    cellcol = -1
-    for line in splt:
-        cellrow = 0
-        cellcol += 1
-        copy[cellcol] = ""
-        for cell in line:
-            tot = numadj(splt)
-            if tot == 3 and cell == ".":
-                copy[cellcol] += "*"
-            elif (tot == 1 or tot == 0) and cell == "*":
-                copy[cellcol] += "."
-            elif (tot == 2 or tot == 3) and cell == "*":
-                copy[cellcol] += "*"
-            elif tot > 3 and cell == "*":
-                copy[cellcol] += "."
-            else:
-                copy[cellcol] += "."
-            cellrow += 1
-    final = ""
-    for item in copy:
-        final += item
-    return (str(col)+str(row)+final)
-    
     raise NotImplementedError
 
 def GetUniverse(u):
-    """
-        Esta funcion debe de regresar el universo en el formato establecido 
-        pero regresa el universo sin el renglon de las dimenciones y con los saltos
-        de linea correspondientes
-    """
-    global row
-    global col
-    if u[0:2].isdigit() == True:
-        row = int(u[1])
-        col = int(u[0])
-    u2 = ""
-    for row2 in range(0,col):
-        u2 += u[(row2*row)+2:(row2*row)+2+row] + "\n"
-    u = u2
-    return u
-    
+    h = int(u[0])
+    w = int(u[1])
+    u = list(u[2:])
+    for x in range (0, h):
+        u.insert((x+1)*w+x, "\n")
+    return "".join(u)
     raise NotImplementedError
 
 if __name__ == '__main__':

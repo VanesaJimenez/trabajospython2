@@ -1,7 +1,5 @@
 """
-        Esta funcion recibe las manos y se encarga de determinar 
-        que juego tiene cada mano, darles puntajes y determinar cual gana
-        (regresa una cadena con el formato indicado) 
+        Esta kata fue tomada del trabajo de luis raul Arzola, saludos profe!
 """
 values = {"2":2, "3":3, "4":4, "5":5, "6":6, "7":7, "8":8, "9":9, "T":10, "J":11, "Q":12, "K":13, "A":14}
 reverse = {2:"2", 3:"3", 4:"4", 5:"5", 6:"6", 7:"7", 8:"8", 9:"9", 10:"T", 11:"J", 12:"Q", 13:"K", 14:"A"}
@@ -208,7 +206,6 @@ def order(players):
 def GetRankedGame(hands):
     players = hands.split("\n")
     return order(players)
-    raise NotImplementedError
     
 if __name__ == '__main__':
     print("Captura un mano por linea y una linea en blanco para terminar:")
